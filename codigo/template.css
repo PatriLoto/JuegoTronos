@@ -1,0 +1,163 @@
+html, body{
+  height:100%;
+  background-color:#000;
+  margin: 0;
+  min-height:700px;
+  overflow:hidden;
+}
+a{
+  color:#ccc;
+}
+
+#tut{
+  background:rgba(0,0,0,.6);
+  color:white;
+  position:absolute;
+  top:0px;
+  z-index:1000;
+  width:100%;
+  text-align:center;
+  height:40px;
+  line-height:40px;
+  font-family:Arial;
+  font-weight:light;
+}
+
+#tut a{
+  text-decoration:none;
+  color:white;
+}
+
+.container{
+   text-transform: uppercase;
+  width:100%;
+  min-height:100%;
+  margin:0 auto;
+  position:relative;
+  padding-bottom:30px;
+  overflow:hidden;
+}
+
+ h2 {
+  text-align: center;
+  margin: 15px 0 5px;
+  text-shadow: none;
+  font-family: Segoe UI;
+  font-weight: lighter;
+}
+
+h1{
+  text-align: center;
+  font-family: Segoe UI;
+  font-weight: lighter;
+  font-size: 50px;
+  margin-top:70px;
+}
+
+#third:checked ~ #labels label,#sixth:checked ~ #labels label{
+  color: rgba(255,255,255,.2);
+}
+
+.one h1 , .one h2 ,#first:checked ~ #labels label.first{
+  color: #474747;
+}
+.two h1,.two h2 ,#second:checked ~ #labels label.second {
+  color: #e1ad02;
+}
+.three h1,.three h2,#third:checked ~ #labels label.third{
+  color: #95241c;
+}
+
+.four h1 , .four h2,#fourth:checked ~ #labels label.fourth{
+  color: #939393;
+}
+
+.five h1 , .five h2, #fifth:checked ~ #labels label.fifth{
+  color: #f3d211;
+}
+
+.six h1 , .six h2,#sixth:checked ~ #labels label.sixth{
+  color: #fecf3c;
+}
+
+input[type="radio"] {
+  display: none;
+}
+label{
+  display: inline-block;
+  margin-right: 40px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 23px;
+  font-family: Arial;
+  font-weight: lighter;
+}
+
+
+
+#labels {
+  position: absolute;
+  bottom: 100px;
+  width: 100%;
+  z-index: 100;
+  text-align: center;
+}
+
+.slide{
+  width: 100%;
+  position:absolute;
+  opacity:0;
+  transition: all 0.3s ease-in;
+  height: 100%;
+}
+
+.slide div{
+  margin:0;
+  padding:30px;
+  width:100%;
+  color:white;
+  position:relative;
+  transition: background-color 0.3s linear;
+  height: 100%;
+}
+
+
+.one div {
+  background-color:#e3c606;
+}
+.two div {
+  background-color:#8b0800;
+}
+
+.three div{
+  background-color: #000000;
+}
+
+.four div{
+  background-color: #fff;
+}
+
+.five div{
+  background-color: #4c860d;
+}
+
+.six div{
+  background-color: #000000;
+}
+
+img{
+  display: block;
+  margin:0 auto;
+  margin-top: 56px;
+  margin-bottom: 60px;
+}
+
+#first:checked ~ div.one,
+#fourth:checked ~ div.four,
+#second:checked ~ div.two ,
+#third:checked ~ div.three,
+#fifth:checked ~ div.five,
+#sixth:checked ~ div.six  {
+  opacity:1;
+}
+
