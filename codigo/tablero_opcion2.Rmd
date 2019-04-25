@@ -1,0 +1,129 @@
+---
+title: "Juego de Tronos"  
+image: E:\PROYECTOS_CON_R\JuegoTronos     #ruta donde se almacenan las imagenes
+output: 
+  flexdashboard::flex_dashboard:
+    css: template.css
+    theme: spacelab
+    #logo: game7.png
+    orientation: column
+    #vertical_layout: scroll
+  
+---
+
+```{r setup, include=FALSE}
+library (tidyverse)
+library(plotly)
+library(flexdashboard)
+library(wesanderson)
+#importación de datosdel primer dataset:tiempo_pantalla
+tiempo_pantalla <- readr::read_csv("https://raw.githubusercontent.com/cienciadedatos/datos-de-miercoles/master/datos/2019/2019-04-17/tiempo_pantalla.csv")
+#View(tiempo_pantalla)     comento así no me muestra las tablas cada vez que ejecuto  
+
+#limpieza inicial
+tiempo_pantallaSinNA <-na.omit(tiempo_pantalla)
+#View(tiempo_pantallaSinNA)
+
+# selecciono los primeros 10 personajes con mayor cantidad de minutos en pantalla para la segunda visualización
+primeros10 <- filter(tiempo_pantallaSinNA, (tiempo_pantallaSinNA$minutos_pantalla>103))
+#View(primeros10)
+
+#verifico los últimos 10 valores
+tail(tiempo_pantallaSinNA)
+# selecciono los últimos 10 personajes con menor cantidad de minutos en pantalla para la tercera visualización
+ultimos10 <- filter(tiempo_pantallaSinNA, (tiempo_pantallaSinNA$minutos_pantalla<2.30))
+#View(ultimos10)
+
+#importación de datos del dataset:personajes_libro
+personajes_libros <- readr::read_csv("https://raw.githubusercontent.com/cienciadedatos/datos-de-miercoles/master/datos/2019/2019-04-17/personajes_libro.csv")
+#View(personajes_libros)
+
+genero <- as.factor(personajes_libros$genero)
+#View(genero)
+# agrupa por lealtad y cuenta la cantidad de hombres y mujeres
+generoporlealtad <-personajes_libros %>% group_by(lealtad) %>% count(genero)                 
+#View (generoporlealtad)
+#renombro las columnas
+names (generoporlealtad) =c("lealtad", "genero","total")
+#View(generoporlealtad)
+```
+
+
+Visualización 1
+=====================================  
+Column {.tabset,{data-width=600}}
+-------------------------------------
+### Personajes femeninos y masculinos correspondientes a cada lealtad
+```{r}
+p<- plot_ly (x = generoporlealtad$lealtad, y = generoporlealtad$total, color = generoporlealtad$genero,
+text = paste('Lealtad','',generoporlealtad$lealtad,":",generoporlealtad$total), 
+         hoverinfo = "text", type = "bar") %>% layout(title= '', legend.text= 'Personaje',
+                                                      xaxis = list(showline = F, 
+                                                                   showticklabels = F, 
+                                                                   fixedrange = T,
+                                                                   showlegend =TRUE,
+                                                                   title = "Lealtad"),
+                                                      yaxis = list(fixedrange = T, 
+                                                                   title = ""))
+p
+
+```
+
+Visualización 2
+=====================================  
+Column {.tabset,{data-width=600}}
+-------------------------------------
+### Temporada 1 a la 6
+
+```{r, height=2}
+
+pal <- wes_palette("Rushmore1", 10, type = "continuous")  #preferidos: Rushmore1,GrandBudapest1, Darjeeling2
+p<- ggplot(data=primeros10, aes(x=nombre, y=minutos_pantalla), colour=nombre) + geom_col(aes(fill=nombre))
+p +  labs(x = "Personajes", y = "Tiempo (min)", colour = " Personajes", 
+          title = "Personajes con mayor protagonismo")+
+          #subtitle = "Temporada de 1 a 6")+
+  scale_fill_manual(values=pal)+ scale_x_discrete(limits=c("Tyrion Lannister","Jon Nieve","Daenerys Targaryen", "Cersei Lannister", "Sansa Stark", "Arya Stark",
+                                                           "Jaime Lannister","Theon Greyjoy", "Samwell Tarly", "Jorah Mormont"))+
+  theme_bw()+
+  #theme (axis.text.x = element_blank())
+  theme(axis.text.x = element_text(angle = 50, vjust = 1.1, hjust=1, color="black"))+ #color="darkgrey
+  theme(plot.title = element_text(family="Courier",
+                                  size=rel(1.5),        
+                                  vjust=2, 
+                                  hjust= 0.5,  
+                                  position_identity(center),   
+                                  face="bold",        #Tipo: Letra negra, otras posibilidades son "plain", "italic", "bold" y "bold.itali
+                                  color="darkred",    #Color del título: maroon, lightblue, lightblue,darkblue, darkorange, black.
+                                  lineheight=2.0), legend.position= "", legend.text = element_blank())
+```
+
+Visualización3
+=====================================  
+Column {.tabset,{data-width=600}}
+-------------------------------------
+### Temporada 1 a la 6
+
+```{r, height=2}
+pal <- wes_palette("Darjeeling2", 10, type = "continuous")
+p<- ggplot(data=ultimos10, aes(x=nombre, y=minutos_pantalla), colour=nombre) + geom_col(aes(fill=nombre))
+p +  labs(x = "Personajes", y = "Tiempo (min)", colour = " Personajes", 
+          title = "Personajes con menos minutos en pantalla")+
+          #subtitle = "Temporada de 1 a 6")+ 
+  scale_fill_manual(values=pal)+ scale_x_discrete(limits=c("Ilyn Payne","Ternesio Terys","Quaithe", "Hugh of the Vale", "Rorge",
+                                                             "Tickler", "Mhaegen","Biter", "Lhara", "Tobho Mott"))+
+  #theme_grey()
+  theme_bw()+
+  theme (axis.text.x = element_blank())+
+  theme(axis.text.x = element_text(angle = 50, vjust = 1, hjust=1,color="black"))+  
+  theme(plot.title = element_text(family="Courier",
+                                  size=rel(1.5),        
+                                  vjust=2,            #Justificación vertical, determina la separación del gráfico
+                                  position_identity(center),   
+                                  face="bold",        #Tipo: Letra negra, otras posibilidades son "plain", "italic", "bold" y "bold.itali
+                                  color="black",      #Color del título: maroon, lightblue, lightblue,darkblue, darkorange, black.
+                                  lineheight=2.0),  legend.position= "", legend.text = element_blank())
+
+```
+
+
+
