@@ -190,7 +190,7 @@ ggplot(datosconCasaNoble, aes(x=lealtad,y=totalXgenero, colour=genero))+
 geom_col(aes(fill=genero),width = .4)+
   #scale_fill_manual(values =c("purple", "lightblue")) +
   #scale_fill_manual(values=pal)+
-  labs (title= "Cantidad de personaje por géneros por casa Noble", x = "Lealtad", y = "Cantidad por género")+
+  labs (x = "Lealtad", y = "Cantidad por género",title= "Cantidad de personaje por géneros por casa Noble")+
   theme(axis.text.x = element_text(angle = 50, vjust = 1, hjust=1))+  
   theme(plot.title = element_text(family="Courier",
                                   size=rel(1.5),        
@@ -224,12 +224,6 @@ p<- plot_ly (x = generoporlealtad$lealtad, y = generoporlealtad$totalXgenero, co
                                                                    title = ""))
 p
 # ---------------------------------------------------------------------------------------------------------------- 
-# Para probar y jugar
-noblefactor <- as.factor(personajes_libros$noble)
-noblesporlealtad <- personajes_libros %>% group_by(lealtad) %>%                 
-  sum(if(noblefactor== '1')0)
-View (noblesporlealtad)
-# ---------------------------------------------------------------------------------------------------------------- 
-# último dataset
+ # último dataset
 cambio_lealtades <- readr::read_csv("https://raw.githubusercontent.com/cienciadedatos/datos-de-miercoles/master/datos/2019/2019-04-17/cambio_lealtades.csv")
 View (cambio_lealtades)
